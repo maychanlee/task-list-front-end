@@ -31,5 +31,5 @@ We want to improve explaining our thought process clearly while coding together.
 *Other co-working agreements that were not captured in the above sections.*
 
 ## Signatures
-Nadia Nelyubina _______________
+Nadia Nelyubina & May Lee
 Date: 12/09/2025
