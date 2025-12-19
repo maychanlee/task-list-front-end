@@ -1,4 +1,5 @@
 import TaskList from './components/TaskList.jsx';
+import NewTaskForm from './components/NewTaskForm.jsx';
 import './App.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -7,21 +8,21 @@ const toggleTask = (task) => {
   return { ...task, isComplete: !task.isComplete };
 };
 
-const kbaseURL = 'http://localhost:5000';
+const kBaseUrl = 'http://localhost:5000';
 
 const getAllTasksAPI = () => {
-  return axios.get(`${kbaseURL}/tasks`)
+  return axios.get(`${kBaseUrl}/tasks`)
     .then(response => response.data)
     .catch(error => console.log(error));
 };
 
 const markCompleteAPI = id => {
-  return axios.patch(`${kbaseURL}/tasks/${id}/mark_complete`)
+  return axios.patch(`${kBaseUrl}/tasks/${id}/mark_complete`)
     .catch(error => console.log(error));
 };
 
 const markIncompleteAPI = id => {
-  return axios.patch(`${kbaseURL}/tasks/${id}/mark_incomplete`)
+  return axios.patch(`${kBaseUrl}/tasks/${id}/mark_incomplete`)
     .catch(error => console.log(error));
 };
 
@@ -32,7 +33,29 @@ const toggleCompleteAPI = task => {
 };
 
 const deleteTaskAPI = id => {
-  return axios.delete(`${kbaseURL}/tasks/${id}`)
+  return axios.delete(`${kBaseUrl}/tasks/${id}`)
+    .catch(error => console.log(error));
+};
+
+const addTaskAPI = taskData => {
+  const {
+    title,
+    isComplete
+  } = taskData;
+
+  const description = 'use HTTP Patch to modify -- added with Vite + React';
+  const completedAt = isComplete ? new Date() : null;
+
+  const body = {
+    title,
+    description,
+    'completed_at': completedAt
+  };
+
+  return axios.post(`${kBaseUrl}/tasks`, body)
+    .then(response => {
+      return convertFromAPI(response.data.task);
+    })
     .catch(error => console.log(error));
 };
 
@@ -46,7 +69,7 @@ const convertFromAPI = (apiTask) => {
 
 // const createTaskAPI = (titleText) => {
 //   return axios
-//     .post(`${kbaseURL}/tasks`, { title: titleText, description: '' })
+//     .post(`${kBaseUrl}/tasks`, { title: titleText, description: '' })
 //     .then(response => response.data)
 //     .catch(error => console.log(error));
 // };
@@ -93,6 +116,16 @@ const App = () => {
       });
   };
 
+  const handleAddTask = (taskData) => {
+    return addTaskAPI(taskData)
+      .then(task => {
+        setTaskData(beforeTask => [...beforeTask,task]);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -104,6 +137,7 @@ const App = () => {
           onToggleCompleteTask={handleToggleCompleteTask}
           onDeleteTask={handleDeleteTask}
         />
+        <NewTaskForm onHandleSubmit={handleAddTask}/>
       </main>
     </div>
   );
