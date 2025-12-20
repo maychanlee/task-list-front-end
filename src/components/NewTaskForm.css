@@ -1,0 +1,58 @@
+.new-task__form {
+  margin-top: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 16px;
+}
+
+.new-task__form section {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1em 1.25em;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.new-task__form h2 {
+  font-size: 1.5em;
+  margin: 0 0 0.75em 0;
+  text-align: center;
+}
+
+.new-task__fields {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  width: 100%;                   
+  box-sizing: border-box;
+  row-gap: 20px;
+  column-gap: 12px;
+  align-items: center;
+}
+
+.new-task__fields label {
+  font-weight: normal;
+  font-size: 1.1em;
+}
+
+.new-task__fields textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.new-task__fields input,
+.new-task__fields textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.new-task__submit {
+  grid-column: span 2;
+  justify-self: start;
+  padding: 0.6em 1em;
+  cursor: pointer;
+  border-radius: 8px;
+}

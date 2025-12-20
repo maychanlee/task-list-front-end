@@ -1,4 +1,5 @@
 import TaskList from './components/TaskList.jsx';
+import NewTaskForm from './components/NewTaskForm.jsx';
 import './App.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -36,20 +37,20 @@ const deleteTaskAPI = id => {
     .catch(error => console.log(error));
 };
 
+const addTaskAPI = (newTask) => {
+  return axios.post(`${kbaseURL}/tasks`, newTask)
+    .then(response => response.data)   // вернёт созданный task
+    .catch(error => console.log(error));
+};
+
 const convertFromAPI = (apiTask) => {
   const newTask = {
     ...apiTask,
     isComplete: apiTask.is_complete,
   };
+  delete newTask.is_complete;
   return newTask;
 };
-
-// const createTaskAPI = (titleText) => {
-//   return axios
-//     .post(`${kbaseURL}/tasks`, { title: titleText, description: '' })
-//     .then(response => response.data)
-//     .catch(error => console.log(error));
-// };
 
 const App = () => {
   const [taskData, setTaskData] = useState([]);
@@ -93,17 +94,28 @@ const App = () => {
       });
   };
 
+  const onAddTaskCallback = (formData) => {
+    return addTaskAPI(formData).then((createdTask) => {
+      return setTaskData((prev) => [convertFromAPI(createdTask), ...prev]);
+    });
+  };
+
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
-        <TaskList
-          tasks={taskData}
-          onToggleCompleteTask={handleToggleCompleteTask}
-          onDeleteTask={handleDeleteTask}
-        />
+        <div className="page">
+          <NewTaskForm onAddTaskCallback={onAddTaskCallback} />
+          <div className="task-list-wrapper">
+            <TaskList
+              tasks={taskData}
+              onToggleCompleteTask={handleToggleCompleteTask}
+              onDeleteTask={handleDeleteTask}/>
+          </div>
+        </div>
       </main>
     </div>
   );
