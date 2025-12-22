@@ -1,4 +1,11 @@
-main ul.tasks__list {
-  width: 50%;
-  margin: auto;
+.tasks__list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 8px;
+  overflow: hidden;
 }
